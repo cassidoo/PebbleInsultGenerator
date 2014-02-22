@@ -19,15 +19,17 @@ function randomCombo()
 
 //var previous = localStorage.getItem('previous') || 0;
 
-simply.on('singleClick', function(e) {
-  var insult = randomCombo();
-  
-  /*if (e.button === 'down') {
-    simply.subtitle(previous);
-  }
-  
-  localStorage.setItem('previous', insult);*/
-  
-  simply.text(insult);
-  
-});
+simply.on('singleClick', function(e)
+{
+    if(e.button != 'up' && e.button != 'down')
+    {
+        var insult = randomCombo();
+        simply.body(insult, true);
+    }
+    /*if (e.button === 'down') {
+     simply.subtitle(previous);
+     }
+
+     localStorage.setItem('previous', insult);*/
+
+}); 
