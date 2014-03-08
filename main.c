@@ -22,14 +22,14 @@ char* genInsult()
 	return *out;
 }
 
-void select_single_click_handler(ClickRecognizerRef recognizer, Window *window) {
-	genInsult();
+static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
+  text_layer_set_text(text_layer, "test"); // genInsult();
 }
 
-void config_provider(ClickConfig **config, Window *window) {
-	// single click
-	config[BUTTON_ID_SELECT]->click.handler = (ClickHandler) select_single_click_handler;
-	config[BUTTON_ID_SELECT]->click.repeat_interval_ms = 1000; 
+static void click_config_provider(void *context) {
+  window_single_click_subscribe(BUTTON_ID_SELECT, select_click_handler);
+  window_single_click_subscribe(BUTTON_ID_UP, select_click_handler);
+  window_single_click_subscribe(BUTTON_ID_DOWN, select_click_handler);
 }
 
 void handle_init(void) {
@@ -43,11 +43,8 @@ void handle_init(void) {
 	text_layer_set_font(text_layer, fonts_get_system_font(FONT_KEY_GOTHIC_28_BOLD));
 	text_layer_set_text_alignment(text_layer, GTextAlignmentCenter);
 	
-	// Add the text layer to the window
-	// ?? layer_add_child(window_layer, text_layer_get_layer(text_layer));
 	layer_add_child(window_get_root_layer(window), text_layer_get_layer(text_layer));
 
-	// Push the window
 	window_stack_push(window, true);	
 
 }
