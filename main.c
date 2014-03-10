@@ -1,5 +1,6 @@
 #include <pebble.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 Window *window;
 TextLayer *text_layer;
@@ -18,36 +19,46 @@ char* genInsult()
 {
 	char out[256];
 	sprintf(out, "%s, thou %s %s %s.", initialblow[rand() % length1], secondblow[rand() % length2], thirdblow[rand() % length3], finalblow[rand() % length4]);
-		
-	return *out;
+	
+	/* Really hacky way of doing this... */
+    char* result = malloc(strlen(out) + 1);
+    strcpy(result, out);
+    return result;
 }
 
-static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
-	text_layer_set_text(text_layer, "test"); // genInsult();
+static void select_click_handler(ClickRecognizerRef recognizer, void *context)
+{
+	char* insult = genInsult();
+	text_layer_set_text(text_layer, insult);
+	free(insult);
 }
 
-static void click_config_provider(void *context) {
+static void click_config_provider(void *context)
+{
 	window_single_click_subscribe(BUTTON_ID_SELECT, select_click_handler);
 	window_single_click_subscribe(BUTTON_ID_UP, select_click_handler);
 	window_single_click_subscribe(BUTTON_ID_DOWN, select_click_handler);
 }
 
-static void window_load(Window *window) {
+static void window_load(Window *window)
+{
 	Layer *window_layer = window_get_root_layer(window);
 	GRect bounds = layer_get_bounds(window_layer);
 	
-	text_layer = text_layer_create((GRect) { .origin = { 0, 72 }, .size = { bounds.size.w, 20 } });
-	text_layer_set_text(text_layer, "Press button for insults");
+	text_layer = text_layer_create((GRect) { .origin = { 0, 72 }, .size = { bounds.size.w, bounds.size.h } });
+	text_layer_set_text(text_layer, "Press >>>");
 	
 	text_layer_set_text_alignment(text_layer, GTextAlignmentCenter);
 	layer_add_child(window_layer, text_layer_get_layer(text_layer));
 }
  
-static void window_unload(Window *window) {
+static void window_unload(Window *window)
+{
 	text_layer_destroy(text_layer);
 }
 
-void handle_init(void) {
+void handle_init(void)
+{
 	window = window_create();
 	window_set_click_config_provider(window, click_config_provider);
 	window_set_window_handlers(window, (WindowHandlers) {
@@ -58,12 +69,14 @@ void handle_init(void) {
 	window_stack_push(window, animated);	
 }
 
-void handle_deinit(void) {
+void handle_deinit(void)
+{
 	  text_layer_destroy(text_layer);
 	  window_destroy(window);
 }
 
-int main(void) {
+int main(void)
+{
 	  handle_init();
 	  app_event_loop();
 	  handle_deinit();
