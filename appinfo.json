@@ -1,0 +1,30 @@
+{
+    "versionLabel": "1.0",
+    "uuid": "44725f13-00b4-4277-8c06-09b05407ecbc",
+    "appKeys": {},
+    "longName": "Olde English Insult Generator",
+    "versionCode": 1,
+    "capabilities": [
+        ""
+    ],
+    "shortName": "Insult Generator",
+    "companyName": "cassidoo",
+    "watchapp": {
+        "watchface": false
+    },
+    "resources": {
+        "media": [
+            {
+                "type": "png",
+                "name": "SPLASH_SCREEN",
+                "file": "images/splash_03.png"
+            },
+            {
+                "menuIcon": true,
+                "type": "png",
+                "name": "SMALL_ICON",
+                "file": "images/smallicon28.png"
+            }
+        ]
+    }
+}
